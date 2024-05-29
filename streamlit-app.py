@@ -18,6 +18,10 @@ st.markdown(
         background-color: #0b5394ff;
         color: #ffffff;
     }
+    h1, h2, h3, h4, h5, h6 {
+        color: #ffffff;
+    }
+    </style>
     """,
     unsafe_allow_html=True
 )
@@ -25,7 +29,7 @@ st.markdown(
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
-    st.title(':white[Stripe Metrics Dashboard Generator]')
+    st.title("Stripe Metrics Dashboard Generator")
     api_key = st.text_input("Enter your Stripe API key:", type="password")
 
     if api_key:
