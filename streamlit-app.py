@@ -1,5 +1,3 @@
-# This is a steamlit version, try it out
-# End Generation Here
 import streamlit as st
 import datetime
 import stripe
@@ -27,17 +25,29 @@ def main():
             with col3:
                 st.metric(label="Revenue/GMV Ratio", value=f"{(latest_month_data['Revenue'] / latest_month_data['GMV'] * 100):.2f}%")
             
+            # Additional metrics for the latest month
+            col4, col5, col6 = st.columns(3)
+            with col4:
+                st.metric(label="Authorization Rate", value=f"{latest_month_data['Authorization Rate']:.2f}%")
+            with col5:
+                st.metric(label="Dispute Rate", value=f"{latest_month_data['Dispute Rate']:.2f}%")
+            with col6:
+                st.metric(label="Fraud Rate", value=f"{latest_month_data['Fraud Rate']:.2f}%")
+            
             # Plotting the data
             st.subheader("Weekly Trends Over the Past 6 Months")
-            metrics_to_plot = ['GMV', 'Revenue', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
+            metrics_to_plot = ['GMV', 'Revenue', 'Revenue/GMV Ratio', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
             col1, col2 = st.columns(2)
             for i, metric in enumerate(metrics_to_plot):
-                if metric in ['GMV', 'Revenue']:
-                    with col1 if i % 2 == 0 else col2:
-                        st.bar_chart(weekly_data.set_index('Date')[metric], height=300, use_container_width=True)
-                else:
-                    with col1 if i % 2 == 0 else col2:
-                        st.line_chart(weekly_data.set_index('Date')[metric], height=300, use_container_width=True)
+                chart_data = weekly_data.set_index('Date')[metric]
+                with col1 if i % 2 == 0 else col2:
+                    if metric in ['GMV', 'Revenue']:
+                        st.bar_chart(chart_data, height=300, use_container_width=True)
+                    elif metric == 'Revenue/GMV Ratio':
+                        st.line_chart((weekly_data['Revenue'] / weekly_data['GMV'] * 100), height=300, use_container_width=True)
+                    else:
+                        st.line_chart(chart_data, height=300, use_container_width=True)
+                    st.caption(metric)  # Label each chart
 
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
@@ -89,6 +99,7 @@ def generate_dashboard_metrics():
             'Date': week_end.strftime('%Y-%m-%d'),
             'GMV': gmv,
             'Revenue': revenue,
+            'Revenue/GMV Ratio': (revenue / gmv * 100) if gmv > 0 else 0,
             'Authorization Rate': authorization_rate,
             'Dispute Rate': dispute_rate,
             'Fraud Rate': fraud_rate
@@ -100,6 +111,7 @@ def generate_dashboard_metrics():
                 'Date': month_end.strftime('%Y-%m-%d'),
                 'GMV': gmv,
                 'Revenue': revenue,
+                'Revenue/GMV Ratio': (revenue / gmv * 100) if gmv > 0 else 0,
                 'Authorization Rate': authorization_rate,
                 'Dispute Rate': dispute_rate,
                 'Fraud Rate': fraud_rate
@@ -113,4 +125,3 @@ def generate_dashboard_metrics():
 
 if __name__ == "__main__":
     main()
-
