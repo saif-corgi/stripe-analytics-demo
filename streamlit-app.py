@@ -79,7 +79,11 @@ def main():
                 fig = px.line(chart_data, x='Date', y=metric, title=metric, markers=True, template='plotly_white')
                 
                 # Update plot colors and layout
-                fig.update_traces(line_color='orange')  # Set line color to orange
+                fig.update_traces(line_color='#f97e04')  # Set line color to orange
+
+                # Update traces to make the line thicker
+                fig.update_traces(line=dict(width=4))  # Increase line width to 4, you can adjust this value as needed
+
                 # Update the layout to remove gridlines
                 fig.update_layout(
                     xaxis=dict(
