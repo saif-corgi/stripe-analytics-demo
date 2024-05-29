@@ -14,12 +14,11 @@ def main():
     if api_key:
         stripe.api_key = api_key
         try:
-            rolling_data = generate_dashboard_metrics()
-            latest_data = {key: values[-1] for key, values in rolling_data.items() if key != 'Date'}
-            latest_date = rolling_data['Date'][-1]
+            weekly_data = generate_dashboard_metrics()
+            latest_data = weekly_data.iloc[-1]
 
-            # Display the metrics for the latest date
-            st.subheader(f"Metrics for {latest_date}")
+            # Display the metrics for the latest week
+            st.subheader(f"Metrics for the week ending on {latest_data['Date']}")
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.metric(label="GMV", value=f"${latest_data['GMV']:,.2f}")
@@ -37,19 +36,10 @@ def main():
                 st.metric(label="Fraud Rate", value=f"{latest_data['Fraud Rate']:.2f}%")
 
             # Plotting the data
-            df = pd.DataFrame(rolling_data)
             st.subheader("Trend Over the Past 6 Months")
             metrics_to_plot = ['GMV', 'Revenue', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
-            for i in range(0, len(metrics_to_plot), 2):
-                cols = st.columns(2)
-                for j in range(2):
-                    if i + j < len(metrics_to_plot):
-                        metric = metrics_to_plot[i + j]
-                        with cols[j]:
-                            chart = st.line_chart(df.set_index('Date')[metric], height=300, use_container_width=True)
-                            chart.pyplot.xlabel('Date')
-                            chart.pyplot.ylabel(metric)
-                            st.caption(metric)
+            for metric in metrics_to_plot:
+                st.line_chart(weekly_data.set_index('Date')[metric], height=300, use_container_width=True)
 
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
@@ -62,28 +52,21 @@ def generate_dashboard_metrics():
     today = datetime.date.today()
     start_date = today - datetime.timedelta(days=180)
 
-    rolling_data = {
-        'Date': [],
-        'GMV': [],
-        'Revenue': [],
-        'Authorization Rate': [],
-        'Dispute Rate': [],
-        'Fraud Rate': []
-    }
+    weekly_data = pd.DataFrame(columns=['Date', 'GMV', 'Revenue', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate'])
 
-    for day in pd.date_range(start=start_date, end=today, freq='D'):
-        day_end = day + datetime.timedelta(days=13)  # 14 days including the start day
-        day_start_unix = int(time.mktime(day.timetuple()))
-        day_end_unix = int(time.mktime(day_end.timetuple()))
+    for week_start in pd.date_range(start=start_date, end=today, freq='W-SUN'):
+        week_end = week_start + datetime.timedelta(days=6)
+        week_start_unix = int(time.mktime(week_start.timetuple()))
+        week_end_unix = int(time.mktime(week_end.timetuple()))
 
         payment_intents = stripe.PaymentIntent.list(
-            created={'gte': day_start_unix, 'lte': day_end_unix}
+            created={'gte': week_start_unix, 'lte': week_end_unix}
         )
         disputes = stripe.Dispute.list(
-            created={'gte': day_start_unix, 'lte': day_end_unix}
+            created={'gte': week_start_unix, 'lte': week_end_unix}
         )
 
-        # Calculate metrics as before
+        # Calculate metrics for the week
         approved_payments = sum(1 for pi in payment_intents.data if pi['status'] == 'succeeded')
         total_payments = len(set(pi.id for pi in payment_intents.data))
         authorization_rate = (approved_payments / total_payments) * 100 if total_payments > 0 else 0
@@ -99,15 +82,17 @@ def generate_dashboard_metrics():
         chargeback_amount = sum(dis['amount'] for dis in disputes.data if dis['status'] in ('lost', 'warning_closed'))
         revenue = gmv - refunded_amount - chargeback_amount
 
-        # Store data
-        rolling_data['Date'].append(day.strftime('%Y-%m-%d'))
-        rolling_data['GMV'].append(gmv)
-        rolling_data['Revenue'].append(revenue)
-        rolling_data['Authorization Rate'].append(authorization_rate)
-        rolling_data['Dispute Rate'].append(dispute_rate)
-        rolling_data['Fraud Rate'].append(fraud_rate)
+        # Store weekly data
+        weekly_data = weekly_data.append({
+            'Date': week_end.strftime('%Y-%m-%d'),
+            'GMV': gmv,
+            'Revenue': revenue,
+            'Authorization Rate': authorization_rate,
+            'Dispute Rate': dispute_rate,
+            'Fraud Rate': fraud_rate
+        }, ignore_index=True)
 
-    return rolling_data
+    return weekly_data
 
 if __name__ == "__main__":
     main()
