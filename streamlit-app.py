@@ -69,16 +69,16 @@ def main():
                     height=300,  # Adjust the height as necessary
                     plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
                     paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
-                    font_color='white',  # Set font and title color to white
-                    title_font_color='white',  # Set just the title color to white if needed
+                    font_color='#ffffff',  # Set font and title color to white
+                    title_font_color='#ffffff',  # Set just the title color to white if needed
                     xaxis=dict(
-                        color='white',  # Set x-axis labels and ticks to white
-                        linecolor='white',  # Set x-axis line color to white
+                        color='#ffffff',  # Set x-axis labels and ticks to white
+                        linecolor='#ffffff',  # Set x-axis line color to white
                         gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
                     ),
                     yaxis=dict(
-                        color='white',  # Set y-axis labels and ticks to white
-                        linecolor='white',  # Set y-axis line color to white
+                        color='#ffffff',  # Set y-axis labels and ticks to white
+                        linecolor='#ffffff',  # Set y-axis line color to white
                         gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
                     )
                 )
