@@ -62,9 +62,27 @@ def main():
             for metric in metrics_to_plot:
                 chart_data = monthly_data[['Date', metric]].tail(12)
                 fig = px.line(chart_data, x='Date', y=metric, title=metric, markers=True, template='plotly_white')
-                fig.update_layout(height=300)  # Adjust the height as necessary
+                
+                # Update plot colors and layout
+                fig.update_traces(line_color='orange')  # Set line color to orange
+                fig.update_layout(
+                    height=300,  # Adjust the height as necessary
+                    plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
+                    paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
+                    font_color='white',  # Set font and title color to white
+                    title_font_color='white',  # Set just the title color to white if needed
+                    xaxis=dict(
+                        color='white',  # Set x-axis labels and ticks to white
+                        linecolor='white',  # Set x-axis line color to white
+                        gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
+                    ),
+                    yaxis=dict(
+                        color='white',  # Set y-axis labels and ticks to white
+                        linecolor='white',  # Set y-axis line color to white
+                        gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
+                    )
+                )
                 st.plotly_chart(fig, use_container_width=True)
-
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
     else:
