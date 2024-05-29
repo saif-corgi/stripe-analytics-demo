@@ -25,7 +25,7 @@ st.markdown(
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
-    st.title(":white[Stripe Metrics Dashboard Generator]")
+    st.title(':white[Stripe Metrics Dashboard Generator]')
     api_key = st.text_input("Enter your Stripe API key:", type="password")
 
     if api_key:
