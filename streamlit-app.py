@@ -9,7 +9,7 @@ import pandas as pd
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
-    st.image("https://drive.google.com/uc?export=view&id=1iexwj7rbdQ0prfKSnUZqxMeFRWerlMnl", width=200)
+    st.image("https://github.com/saif-corgi/stripe-analytics-demo/blob/main/CorgiAI%20logo%20(white%20background)%201200.png", width=300)
 
 st.markdown(
     """
