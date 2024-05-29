@@ -85,7 +85,6 @@ def main():
                     plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
                     paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
                     font_color='#ffffff',  # Set font and title color to white
-                    title_font_color='#ffffff',  # Set just the title color to white if needed
                     xaxis=dict(
                         color='#ffffff',  # Set x-axis labels and ticks to white
                         linecolor='#ffffff',  # Set x-axis line color to white
