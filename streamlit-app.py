@@ -41,7 +41,9 @@ st.markdown(
 )
 
 def main():
-    st.title("Stripe Metrics Dashboard Generator")
+    col1, col2, col3 = st.columns([1,1,1])
+    with col2:
+        st.title("Stripe Metrics Dashboard Generator")
     api_key = st.text_input("Enter your Stripe API key:", type="password")
 
     if api_key:
