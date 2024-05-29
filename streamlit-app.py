@@ -3,6 +3,8 @@
 import streamlit as st
 import datetime
 import stripe
+import time
+import pandas as pd
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
@@ -12,122 +14,72 @@ def main():
     if api_key:
         stripe.api_key = api_key
         try:
-            # Assuming the rest of the code is properly defined to use the given API key
-            metrics, evaluation = generate_dashboard_metrics()
-            st.write("Metrics:", metrics)
-            st.write("Evaluation:", evaluation)
+            monthly_data = generate_dashboard_metrics()
+            st.write("Metrics for the last month:", monthly_data)
 
-            # Display the metrics in a Streamlit dashboard
-            st.title('Corgi Metrics Dashboard')
-            
-            # Custom CSS to improve the look
-            st.markdown("""
-            <style>
-            .big-font {
-                font-size:30px !important;
-                font-weight: bold;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-            
-            # Display the metrics
-            st.header('Key Performance Indicators')
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric(label="GMV", value=f"${metrics['GMV']:,.2f}")
-            with col2:
-                st.metric(label="Revenue", value=f"${metrics['Revenue']:,.2f}")
-            with col3:
-                st.metric(label="Revenue/GMV Ratio", value=evaluation['Revenue/GMV ratio'])
-            
-            # Display rates with expanders for details
-            st.header('Rates')
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric(label="Authorization Rate", value=metrics['Authorization Rate'])
-                with st.expander("See Details"):
-                    st.write(evaluation['Authorization Rate'])
-            with col2:
-                st.metric(label="Dispute Rate", value=metrics['Dispute Rate'])
-                with st.expander("See Details"):
-                    st.write(evaluation['Dispute Rate'])
-            with col3:
-                st.metric(label="Fraud Rate", value=metrics['Fraud Rate'])
-                with st.expander("See Details"):
-                    st.write(evaluation['Fraud Rate'])
+            # Plotting the data
+            df = pd.DataFrame(monthly_data)
+            st.line_chart(df.set_index('Month'))
+
         except Exception as e:
-             st.error(f"Failed to generate dashboard: {str(e)}")
+            st.error(f"Failed to generate dashboard: {str(e)}")
     else:
         st.warning("Please enter a valid Stripe API key to generate the dashboard.")
         
     
-import time
-
 def generate_dashboard_metrics():
-    # Define the time period for the data (last month)
+    # Define the time period for the data (past 6 months)
     today = datetime.date.today()
-    first_day_last_month = (today.replace(day=1) - datetime.timedelta(days=1)).replace(day=1)
     last_day_last_month = today.replace(day=1) - datetime.timedelta(days=1)
+    first_day_six_months_ago = last_day_last_month - datetime.timedelta(days=180)
 
-    # Convert dates to UNIX timestamps
-    first_day_last_month_unix = int(time.mktime(first_day_last_month.timetuple()))
-    last_day_last_month_unix = int(time.mktime(last_day_last_month.timetuple()))
-
-    # Fetch data from Stripe using the correct 'range' parameter
-    payment_intents = stripe.PaymentIntent.list(
-        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
-    )
-    disputes = stripe.Dispute.list(
-        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
-    )
-    
-    # Calculate Authorization Rate using Python
-    approved_payments = sum(1 for pi in payment_intents.data if pi['status'] == 'succeeded')
-    total_payments = len(set(pi.id for pi in payment_intents.data))
-    authorization_rate = (approved_payments / total_payments) * 100 if total_payments > 0 else 0
-    authorization_rate = f"{authorization_rate:.2f}%"
-
-    # Calculate Dispute Rate using Python
-    disputed_payments = sum(1 for d in disputes.data if d['id'] is not None)
-    dispute_rate = (disputed_payments / total_payments) * 100 if total_payments > 0 else 0
-    dispute_rate = f"{dispute_rate:.2f}%"
-
-    # Calculate Fraud Rate using Python
-    fraudulent_disputes = sum(1 for d in disputes.data if d['id'] is not None and d['reason'] == 'fraudulent')
-    fraud_rate = (fraudulent_disputes / total_payments) * 100 if total_payments > 0 else 0
-    fraud_rate = f"{fraud_rate:.2f}%"
-    # Calculate GMV and Revenue using Python
-    gmv = sum(pi['amount'] for pi in payment_intents.data)
-    
-    # Calculate refunded amount from refund data
-    refunded_amount = sum(ref['amount'] for ref in disputes.data if ref['status'] in ('succeeded', 'pending'))
-    
-    # Calculate chargeback amount from dispute data
-    chargeback_amount = sum(dis['amount'] for dis in disputes.data if dis['status'] in ('lost', 'warning_closed'))
-    
-    # Calculate revenue
-    revenue = gmv - refunded_amount - chargeback_amount
-
-    metrics = {
-        'GMV': gmv,
-        'Revenue': revenue,
-        'Authorization Rate': authorization_rate,
-        'Dispute Rate': dispute_rate,
-        'Fraud Rate': fraud_rate
+    monthly_data = {
+        'Month': [],
+        'GMV': [],
+        'Revenue': [],
+        'Authorization Rate': [],
+        'Dispute Rate': [],
+        'Fraud Rate': []
     }
 
-    # Evaluate metrics
-    evaluation = {
-        'Revenue/GMV ratio': 'Good' if (revenue / gmv * 100) >= 90 else 'Needs Improvement',
-        'Authorization Rate': 'Good' if float(authorization_rate.strip('%')) > 92 else 'Needs Improvement',
-        'Dispute Rate': 'Good' if float(dispute_rate.strip('%')) < 0.3 else 'Needs Improvement',
-        'Fraud Rate': 'Good' if float(fraud_rate.strip('%')) < 0.3 else 'Needs Improvement'
-    }
-    return metrics, evaluation
+    for month_start in pd.date_range(start=first_day_six_months_ago, end=last_day_last_month, freq='MS'):
+        month_end = (month_start + pd.offsets.MonthEnd(1)).date()
+        month_start_unix = int(time.mktime(month_start.timetuple()))
+        month_end_unix = int(time.mktime(month_end.timetuple()))
 
+        payment_intents = stripe.PaymentIntent.list(
+            created={'gte': month_start_unix, 'lte': month_end_unix}
+        )
+        disputes = stripe.Dispute.list(
+            created={'gte': month_start_unix, 'lte': month_end_unix}
+        )
 
+        # Calculate metrics as before
+        approved_payments = sum(1 for pi in payment_intents.data if pi['status'] == 'succeeded')
+        total_payments = len(set(pi.id for pi in payment_intents.data))
+        authorization_rate = (approved_payments / total_payments) * 100 if total_payments > 0 else 0
+
+        disputed_payments = sum(1 for d in disputes.data if d['id'] is not None)
+        dispute_rate = (disputed_payments / total_payments) * 100 if total_payments > 0 else 0
+
+        fraudulent_disputes = sum(1 for d in disputes.data if d['id'] is not None and d['reason'] == 'fraudulent')
+        fraud_rate = (fraudulent_disputes / total_payments) * 100 if total_payments > 0 else 0
+
+        gmv = sum(pi['amount'] for pi in payment_intents.data)
+        refunded_amount = sum(ref['amount'] for ref in disputes.data if ref['status'] in ('succeeded', 'pending'))
+        chargeback_amount = sum(dis['amount'] for dis in disputes.data if dis['status'] in ('lost', 'warning_closed'))
+        revenue = gmv - refunded_amount - chargeback_amount
+
+        # Store data
+        monthly_data['Month'].append(month_start.strftime('%Y-%m'))
+        monthly_data['GMV'].append(gmv)
+        monthly_data['Revenue'].append(revenue)
+        monthly_data['Authorization Rate'].append(authorization_rate)
+        monthly_data['Dispute Rate'].append(dispute_rate)
+        monthly_data['Fraud Rate'].append(fraud_rate)
+
+    return monthly_data
 
 if __name__ == "__main__":
     main()
 
-    
