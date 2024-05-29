@@ -40,15 +40,7 @@ def generate_dashboard_metrics():
     disputes = stripe.Dispute.list(
         created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
     )
-    customers = stripe.Customer.list(
-        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
-    )
-    payment_methods = stripe.PaymentMethod.list(
-        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
-    )
-    cards = stripe.Card.list(
-        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
-    )
+    
     # Calculate Authorization Rate using Python
     approved_payments = sum(1 for pi in payment_intents.data if pi['charges']['data'][0]['outcome']['network_status'] == 'approved_by_network')
     total_payments = len(set(pi.id for pi in payment_intents.data))
