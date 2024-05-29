@@ -33,7 +33,7 @@ def generate_dashboard_metrics():
     first_day_last_month_unix = int(time.mktime(first_day_last_month.timetuple()))
     last_day_last_month_unix = int(time.mktime(last_day_last_month.timetuple()))
 
-    # Fetch data from Stripe
+    # Fetch data from Stripe using the correct 'range' parameter
     payment_intents = stripe.PaymentIntent.list(
         created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
     )
