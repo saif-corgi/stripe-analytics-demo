@@ -52,7 +52,8 @@ def generate_dashboard_metrics():
     today = datetime.date.today()
     start_date = today - datetime.timedelta(days=180)
 
-    weekly_data = pd.DataFrame(columns=['Date', 'GMV', 'Revenue', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate'])
+    # Initialize an empty list to store weekly data dictionaries
+    weekly_data_list = []
 
     for week_start in pd.date_range(start=start_date, end=today, freq='W-SUN'):
         week_end = week_start + datetime.timedelta(days=6)
@@ -82,15 +83,18 @@ def generate_dashboard_metrics():
         chargeback_amount = sum(dis['amount'] for dis in disputes.data if dis['status'] in ('lost', 'warning_closed'))
         revenue = gmv - refunded_amount - chargeback_amount
 
-        # Store weekly data
-        weekly_data = weekly_data.append({
+        # Append weekly data to the list
+        weekly_data_list.append({
             'Date': week_end.strftime('%Y-%m-%d'),
             'GMV': gmv,
             'Revenue': revenue,
             'Authorization Rate': authorization_rate,
             'Dispute Rate': dispute_rate,
             'Fraud Rate': fraud_rate
-        }, ignore_index=True)
+        })
+
+    # Convert list of dictionaries to DataFrame
+    weekly_data = pd.DataFrame(weekly_data_list)
 
     return weekly_data
 
