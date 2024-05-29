@@ -7,7 +7,7 @@ import pandas as pd
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
-    st.image("https://drive.google.com/uc?id=1iexwj7rbdQ0prfKSnUZqxMeFRWerlMnl", width=200)
+    st.image("https://drive.google.com/uc?export=view&id=1iexwj7rbdQ0prfKSnUZqxMeFRWerlMnl", width=200)
 
 st.markdown(
     """
