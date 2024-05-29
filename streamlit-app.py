@@ -18,6 +18,14 @@ st.markdown(
         background-color: #0b5394ff;
         color: #ffffff;
     }
+    .title-style {
+        font-size: 40px;
+        color: #ffffff;  
+    }
+    .subheader-style {
+        font-size: 32px;
+        color: #ffffff;  
+    }
     </style>
     """,
     unsafe_allow_html=True
