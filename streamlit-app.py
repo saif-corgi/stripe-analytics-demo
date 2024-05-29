@@ -56,7 +56,7 @@ def main():
             st.subheader(f"Metrics for the month ending on {latest_month_data['Date']}")
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric(label="GMV", value=f"${latest_month_data['GMV']:,.2f}")
+                st.metric(label=":white[GMV]", value=f"${latest_month_data['GMV']:,.2f}")
             with col2:
                 st.metric(label="Revenue", value=f"${latest_month_data['Revenue']:,.2f}")
             with col3:
