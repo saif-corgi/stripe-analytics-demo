@@ -71,71 +71,42 @@ def main():
             with col6:
                 st.metric(label="Fraud Rate", value=f"{latest_month_data['Fraud Rate']:.2f}%")
 
-            # Plotting the data for the past 12 months
+        
             st.subheader("Monthly Trends Over the Past 12 Months")
             metrics_to_plot = ['GMV', 'Revenue', 'Revenue/GMV Ratio', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
             for metric in metrics_to_plot:
                 chart_data = monthly_data[['Date', metric]].tail(12)
-                fig = px.bar(chart_data, x='Date', y=metric, title=metric, template='plotly_white')
-            
-                # Customizing the chart appearance for a dark theme
+                fig = px.line(chart_data, x='Date', y=metric, title=metric, markers=True, template='plotly_white')
+                
+                # Update plot colors and layout
+                fig.update_traces(line_color='orange')  # Set line color to orange
+                # Update the layout to remove gridlines
                 fig.update_layout(
-                    plot_bgcolor='rgba(0,0,0,0)',  # Making background transparent
-                    paper_bgcolor='rgba(0,0,0,0)',  # Also making the paper transparent
-                    font_color='white',  # Setting text color to white
                     xaxis=dict(
-                        color='white',  # X-axis labels and ticks to white
-                        linecolor='white'  # X-axis line color to white
+                        showgrid=False,  # Hide gridlines for x-axis
                     ),
                     yaxis=dict(
-                        color='white',  # Y-axis labels and ticks to white
-                        linecolor='white'  # Y-axis line color to white
+                        showgrid=False,  # Hide gridlines for y-axis
                     )
                 )
-            
-                # Reduce whitespace by setting margins
-                fig.update_layout(margin=dict(l=20, r=20, t=30, b=20))
-                
-                st.plotly_chart(fig, use_container_width=True)
-
-
-
-            
-            # st.subheader("Monthly Trends Over the Past 12 Months")
-            # metrics_to_plot = ['GMV', 'Revenue', 'Revenue/GMV Ratio', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
-            # for metric in metrics_to_plot:
-            #     chart_data = monthly_data[['Date', metric]].tail(12)
-            #     fig = px.line(chart_data, x='Date', y=metric, title=metric, markers=True, template='plotly_white')
-                
-            #     # Update plot colors and layout
-            #     fig.update_traces(line_color='orange')  # Set line color to orange
-            #     # Update the layout to remove gridlines
-            #     fig.update_layout(
-            #         xaxis=dict(
-            #             showgrid=False,  # Hide gridlines for x-axis
-            #         ),
-            #         yaxis=dict(
-            #             showgrid=False,  # Hide gridlines for y-axis
-            #         )
-            #     )
-            #     fig.update_layout(
-            #         title_font_color='white',
-            #         height=300,  # Adjust the height as necessary
-            #         margin=dict(l=20, r=20, t=30, b=20),  # Reduce margins to reduce whitespace (left, right, top, bottom)
-            #         plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
-            #         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
-            #         font_color='#ffffff',  # Set font and title color to white
-            #         xaxis=dict(
-            #             color='#ffffff',  # Set x-axis labels and ticks to white
-            #             linecolor='#ffffff',  # Set x-axis line color to white
-            #             gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
-            #         ),
-            #         yaxis=dict(
-            #             color='#ffffff',  # Set y-axis labels and ticks to white
-            #             linecolor='#ffffff',  # Set y-axis line color to white
-            #             gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
-            #         )
-            #     )
+                fig.update_layout(
+                    title_font_color='white',
+                    height=300,  # Adjust the height as necessary
+                    margin=dict(l=20, r=20, t=30, b=20),  # Reduce margins to reduce whitespace (left, right, top, bottom)
+                    plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
+                    paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
+                    font_color='#ffffff',  # Set font and title color to white
+                    xaxis=dict(
+                        color='#ffffff',  # Set x-axis labels and ticks to white
+                        linecolor='#ffffff',  # Set x-axis line color to white
+                        gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
+                    ),
+                    yaxis=dict(
+                        color='#ffffff',  # Set y-axis labels and ticks to white
+                        linecolor='#ffffff',  # Set y-axis line color to white
+                        gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
+                    )
+                )
                 st.plotly_chart(fig, use_container_width=True)
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
