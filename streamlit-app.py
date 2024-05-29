@@ -21,31 +21,33 @@ def main():
     else:
         st.warning("Please enter a valid Stripe API key to generate the dashboard.")
 
-def generate_dashboard_metrics():
-    # Placeholder for the function that generates metrics and evaluation
-    # This should include all the necessary computations and data fetching
-    # For now, we'll return dummy data
+import time
 
+def generate_dashboard_metrics():
     # Define the time period for the data (last month)
     today = datetime.date.today()
     first_day_last_month = (today.replace(day=1) - datetime.timedelta(days=1)).replace(day=1)
     last_day_last_month = today.replace(day=1) - datetime.timedelta(days=1)
 
+    # Convert dates to UNIX timestamps
+    first_day_last_month_unix = int(time.mktime(first_day_last_month.timetuple()))
+    last_day_last_month_unix = int(time.mktime(last_day_last_month.timetuple()))
+
     # Fetch data from Stripe
     payment_intents = stripe.PaymentIntent.list(
-        created={'gte': int(first_day_last_month.strftime('%s')), 'lte': int(last_day_last_month.strftime('%s'))}
+        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
     )
     disputes = stripe.Dispute.list(
-        created={'gte': int(first_day_last_month.strftime('%s')), 'lte': int(last_day_last_month.strftime('%s'))}
+        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
     )
     customers = stripe.Customer.list(
-        created={'gte': int(first_day_last_month.strftime('%s')), 'lte': int(last_day_last_month.strftime('%s'))}
+        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
     )
     payment_methods = stripe.PaymentMethod.list(
-        created={'gte': int(first_day_last_month.strftime('%s')), 'lte': int(last_day_last_month.strftime('%s'))}
+        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
     )
     cards = stripe.Card.list(
-        created={'gte': int(first_day_last_month.strftime('%s')), 'lte': int(last_day_last_month.strftime('%s'))}
+        created={'gte': first_day_last_month_unix, 'lte': last_day_last_month_unix}
     )
     # Calculate Authorization Rate using Python
     approved_payments = sum(1 for pi in payment_intents.data if pi['charges']['data'][0]['outcome']['network_status'] == 'approved_by_network')
