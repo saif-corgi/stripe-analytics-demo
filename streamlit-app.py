@@ -3,6 +3,8 @@ import datetime
 import stripe
 import time
 import pandas as pd
+# To center the logo, you can use Streamlit's columns to center the image.
+# First, ensure your image is hosted and publicly accessible, as previously described.
 
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,2,1])
@@ -14,11 +16,13 @@ st.markdown(
     <style>
     .stApp {
         background-color: #0b5394ff;
+        color: white;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
