@@ -85,9 +85,6 @@ def generate_dashboard_metrics():
     }
     return metrics, evaluation
 
-if __name__ == "__main__":
-    main()
-
     # Display the metrics in a Streamlit dashboard
     st.title('Corgi Metrics Dashboard')
     
@@ -119,3 +116,8 @@ if __name__ == "__main__":
         st.subheader('Fraud Rate')
         st.write(metrics['Fraud Rate'])
         st.write(evaluation['Fraud Rate'])
+
+if __name__ == "__main__":
+    main()
+
+    
