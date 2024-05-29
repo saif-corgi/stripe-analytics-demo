@@ -15,11 +15,24 @@ def main():
         stripe.api_key = api_key
         try:
             monthly_data = generate_dashboard_metrics()
-            st.write("Metrics for the last month:", monthly_data)
+            latest_month_data = {key: values[-1] for key, values in monthly_data.items() if key != 'Month'}
+            latest_month = monthly_data['Month'][-1]
+
+            # Display the metrics for the latest month
+            st.subheader(f"Metrics for {latest_month}")
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric(label="GMV", value=f"${latest_month_data['GMV']:,.2f}")
+            with col2:
+                st.metric(label="Revenue", value=f"${latest_month_data['Revenue']:,.2f}")
+            with col3:
+                st.metric(label="Revenue/GMV Ratio", value=f"{(latest_month_data['Revenue'] / latest_month_data['GMV'] * 100):.2f}%")
 
             # Plotting the data
             df = pd.DataFrame(monthly_data)
-            st.line_chart(df.set_index('Month'))
+            st.subheader("Trend Over the Past 6 Months")
+            for metric in ['GMV', 'Revenue', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']:
+                st.line_chart(df.set_index('Month')[metric], height=300)
 
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
