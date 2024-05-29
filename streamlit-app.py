@@ -74,7 +74,7 @@ def main():
             metrics_to_plot = ['GMV', 'Revenue', 'Revenue/GMV Ratio', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
             for metric in metrics_to_plot:
                 chart_data = monthly_data[['Date', metric]].tail(12)
-                fig = px.line(chart_data, x='Date', title=metric, markers=True, template='plotly_white')
+                fig = px.line(chart_data, x='Date', y=metric, title=metric, markers=True, template='plotly_white')
                 
                 # Update plot colors and layout
                 fig.update_traces(line_color='orange')  # Set line color to orange
