@@ -103,12 +103,17 @@ def main():
                     xaxis=dict(
                         color='#ffffff',  # Set x-axis labels and ticks to white
                         linecolor='#ffffff',  # Set x-axis line color to white
-                        gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
+                        # gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
+                        gridcolor='#ffffff'  # Set grid color to white
+                        tickfont=dict(size=14),  # Optional: adjust font size for better visibility
+                        title_font=dict(size=16)  # Optional: adjust title font size
                     ),
                     yaxis=dict(
                         color='#ffffff',  # Set y-axis labels and ticks to white
                         linecolor='#ffffff',  # Set y-axis line color to white
-                        gridcolor='rgba(255,255,255,0.2)'  # Set grid color to light white
+                        gridcolor='#ffffff'  # Set grid color to white
+                        tickfont=dict(size=14),  # Optional: adjust font size for better visibility
+                        title_font=dict(size=16)  # Optional: adjust title font size
                     )
                 )
                 st.plotly_chart(fig, use_container_width=True)
