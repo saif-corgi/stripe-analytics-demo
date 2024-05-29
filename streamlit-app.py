@@ -35,7 +35,7 @@ st.markdown(
     .stTextInput{
         color: #ffffff;
     }
-    .stMetric{
+    .stMetricLabel{
         color: #f97e04;
     }
     </style>
