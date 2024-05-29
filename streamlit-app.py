@@ -78,6 +78,15 @@ def main():
                 
                 # Update plot colors and layout
                 fig.update_traces(line_color='orange')  # Set line color to orange
+                # Update the layout to remove gridlines
+                fig.update_layout(
+                    xaxis=dict(
+                        showgrid=False,  # Hide gridlines for x-axis
+                    ),
+                    yaxis=dict(
+                        showgrid=False,  # Hide gridlines for y-axis
+                    )
+                )
                 fig.update_layout(
                     title_font_color='white',
                     height=300,  # Adjust the height as necessary
