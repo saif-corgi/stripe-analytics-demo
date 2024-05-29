@@ -17,46 +17,46 @@ def main():
             st.write("Metrics:", metrics)
             st.write("Evaluation:", evaluation)
 
-        # Display the metrics in a Streamlit dashboard
-        st.title('Corgi Metrics Dashboard')
-        
-        # Custom CSS to improve the look
-        st.markdown("""
-        <style>
-        .big-font {
-            font-size:30px !important;
-            font-weight: bold;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # Display the metrics
-        st.header('Key Performance Indicators')
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric(label="GMV", value=f"${metrics['GMV']:,.2f}")
-        with col2:
-            st.metric(label="Revenue", value=f"${metrics['Revenue']:,.2f}")
-        with col3:
-            st.metric(label="Revenue/GMV Ratio", value=evaluation['Revenue/GMV ratio'])
-        
-        # Display rates with expanders for details
-        st.header('Rates')
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric(label="Authorization Rate", value=metrics['Authorization Rate'])
-            with st.expander("See Details"):
-                st.write(evaluation['Authorization Rate'])
-        with col2:
-            st.metric(label="Dispute Rate", value=metrics['Dispute Rate'])
-            with st.expander("See Details"):
-                st.write(evaluation['Dispute Rate'])
-        with col3:
-            st.metric(label="Fraud Rate", value=metrics['Fraud Rate'])
-            with st.expander("See Details"):
-                st.write(evaluation['Fraud Rate'])
-        except Exception as e:
-            st.error(f"Failed to generate dashboard: {str(e)}")
+            # Display the metrics in a Streamlit dashboard
+            st.title('Corgi Metrics Dashboard')
+            
+            # Custom CSS to improve the look
+            st.markdown("""
+            <style>
+            .big-font {
+                font-size:30px !important;
+                font-weight: bold;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            # Display the metrics
+            st.header('Key Performance Indicators')
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric(label="GMV", value=f"${metrics['GMV']:,.2f}")
+            with col2:
+                st.metric(label="Revenue", value=f"${metrics['Revenue']:,.2f}")
+            with col3:
+                st.metric(label="Revenue/GMV Ratio", value=evaluation['Revenue/GMV ratio'])
+            
+            # Display rates with expanders for details
+            st.header('Rates')
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric(label="Authorization Rate", value=metrics['Authorization Rate'])
+                with st.expander("See Details"):
+                    st.write(evaluation['Authorization Rate'])
+            with col2:
+                st.metric(label="Dispute Rate", value=metrics['Dispute Rate'])
+                with st.expander("See Details"):
+                    st.write(evaluation['Dispute Rate'])
+            with col3:
+                st.metric(label="Fraud Rate", value=metrics['Fraud Rate'])
+                with st.expander("See Details"):
+                    st.write(evaluation['Fraud Rate'])
+            except Exception as e:
+                st.error(f"Failed to generate dashboard: {str(e)}")
     else:
         st.warning("Please enter a valid Stripe API key to generate the dashboard.")
         
