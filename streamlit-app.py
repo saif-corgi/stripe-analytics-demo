@@ -35,6 +35,9 @@ st.markdown(
     .stTextInput{
         color: #ffffff;
     }
+    .stMetric{
+        color: #f97e04;
+    }
     </style>
     """,
     unsafe_allow_html=True
