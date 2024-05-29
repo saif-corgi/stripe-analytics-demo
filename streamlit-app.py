@@ -40,6 +40,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Custom CSS to change metric label color to white
+st.markdown("""
+<style>
+.css-1r6slb0 {
+    color: white !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 def main():
     # st.title("Stripe Metrics Dashboard Generator")
     st.markdown("<h1 style='text-align: center; color: white;'>Stripe Metrics Dashboard Generator</h1>", unsafe_allow_html=True)
@@ -56,7 +65,7 @@ def main():
             st.subheader(f"Metrics for the month ending on {latest_month_data['Date']}")
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric(label=":orange[GMV]", value=f"${latest_month_data['GMV']:,.2f}")
+                st.metric(label="GMV", value=f"${latest_month_data['GMV']:,.2f}")
             with col2:
                 st.metric(label="Revenue", value=f"${latest_month_data['Revenue']:,.2f}")
             with col3:
