@@ -7,6 +7,16 @@ import plotly.express as px
 # To center the logo, you can use Streamlit's columns to center the image.
 # First, ensure your image is hosted and publicly accessible, as previously described.
 
+# Setting up theme customization via Python
+st.set_page_config(
+    layout="wide",
+    page_title="Corgi Labs Payments Metrics Preview",
+    menu_items={
+        'Get Help': 'https://www.corgilabs.ai',
+        'About': "# Get powerful insights on your payments, using only your Stripe API key!"
+    }
+)
+
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
@@ -23,6 +33,9 @@ st.markdown(
         color: #ffffff;
     }
     </style>
+    .stTextInput{
+        color: #ffffff;
+    }
     """,
     unsafe_allow_html=True
 )
@@ -61,11 +74,12 @@ def main():
             metrics_to_plot = ['GMV', 'Revenue', 'Revenue/GMV Ratio', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
             for metric in metrics_to_plot:
                 chart_data = monthly_data[['Date', metric]].tail(12)
-                fig = px.line(chart_data, x='Date', y=metric, title=metric, markers=True, template='plotly_white')
+                fig = px.line(chart_data, x='Date', title=metric, markers=True, template='plotly_white')
                 
                 # Update plot colors and layout
                 fig.update_traces(line_color='orange')  # Set line color to orange
                 fig.update_layout(
+                    title_font_color='white',
                     height=300,  # Adjust the height as necessary
                     margin=dict(l=20, r=20, t=30, b=20),  # Reduce margins to reduce whitespace (left, right, top, bottom)
                     plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
