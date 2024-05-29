@@ -16,44 +16,46 @@ def main():
             metrics, evaluation = generate_dashboard_metrics()
             st.write("Metrics:", metrics)
             st.write("Evaluation:", evaluation)
+
+        # Display the metrics in a Streamlit dashboard
+    
+            st.title('Corgi Metrics Dashboard')
+            
+            # Display the metrics
+            st.header('Key Performance Indicators')
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.subheader('GMV')
+                st.write(f"${metrics['GMV']:,.2f}")
+            with col2:
+                st.subheader('Revenue')
+                st.write(f"${metrics['Revenue']:,.2f}")
+            with col3:
+                st.subheader('Revenue/GMV Ratio')
+                st.write(evaluation['Revenue/GMV ratio'])
+            
+            # Display rates
+            st.header('Rates')
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.subheader('Authorization Rate')
+                st.write(metrics['Authorization Rate'])
+                st.write(evaluation['Authorization Rate'])
+            with col2:
+                st.subheader('Dispute Rate')
+                st.write(metrics['Dispute Rate'])
+                st.write(evaluation['Dispute Rate'])
+            with col3:
+                st.subheader('Fraud Rate')
+                st.write(metrics['Fraud Rate'])
+                st.write(evaluation['Fraud Rate'])
+
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
     else:
         st.warning("Please enter a valid Stripe API key to generate the dashboard.")
         
-    # Display the metrics in a Streamlit dashboard
     
-    st.title('Corgi Metrics Dashboard')
-    
-    # Display the metrics
-    st.header('Key Performance Indicators')
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.subheader('GMV')
-        st.write(f"${metrics['GMV']:,.2f}")
-    with col2:
-        st.subheader('Revenue')
-        st.write(f"${metrics['Revenue']:,.2f}")
-    with col3:
-        st.subheader('Revenue/GMV Ratio')
-        st.write(evaluation['Revenue/GMV ratio'])
-    
-    # Display rates
-    st.header('Rates')
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.subheader('Authorization Rate')
-        st.write(metrics['Authorization Rate'])
-        st.write(evaluation['Authorization Rate'])
-    with col2:
-        st.subheader('Dispute Rate')
-        st.write(metrics['Dispute Rate'])
-        st.write(evaluation['Dispute Rate'])
-    with col3:
-        st.subheader('Fraud Rate')
-        st.write(metrics['Fraud Rate'])
-        st.write(evaluation['Fraud Rate'])
-
 import time
 
 def generate_dashboard_metrics():
