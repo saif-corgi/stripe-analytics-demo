@@ -4,6 +4,22 @@ import stripe
 import time
 import pandas as pd
 
+# Example using a direct link from Google Drive:
+col1, col2, col3 = st.columns([1,2,1])
+with col2:
+    st.image("https://drive.google.com/uc?id=1iexwj7rbdQ0prfKSnUZqxMeFRWerlMnl", width=200)
+
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #0b5394ff;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
     st.title("Stripe Metrics Dashboard Generator")
