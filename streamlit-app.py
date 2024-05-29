@@ -42,7 +42,7 @@ def generate_dashboard_metrics():
     )
     
     # Calculate Authorization Rate using Python
-    approved_payments = sum(1 for pi in payment_intents.data if pi['charges']['data'][0]['outcome']['network_status'] == 'approved_by_network')
+    approved_payments = sum(1 for pi in payment_intents.data if pi['status'] == 'succeeded')
     total_payments = len(set(pi.id for pi in payment_intents.data))
     authorization_rate = (approved_payments / total_payments) * 100 if total_payments > 0 else 0
     authorization_rate = f"{authorization_rate:.2f}%"
