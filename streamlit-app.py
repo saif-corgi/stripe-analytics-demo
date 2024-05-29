@@ -14,33 +14,42 @@ def main():
     if api_key:
         stripe.api_key = api_key
         try:
-            monthly_data = generate_dashboard_metrics()
-            latest_month_data = {key: values[-1] for key, values in monthly_data.items() if key != 'Month'}
-            latest_month = monthly_data['Month'][-1]
+            rolling_data = generate_dashboard_metrics()
+            latest_data = {key: values[-1] for key, values in rolling_data.items() if key != 'Date'}
+            latest_date = rolling_data['Date'][-1]
 
-            # Display the metrics for the latest month
-            st.subheader(f"Metrics for {latest_month}")
+            # Display the metrics for the latest date
+            st.subheader(f"Metrics for {latest_date}")
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric(label="GMV", value=f"${latest_month_data['GMV']:,.2f}")
+                st.metric(label="GMV", value=f"${latest_data['GMV']:,.2f}")
             with col2:
-                st.metric(label="Revenue", value=f"${latest_month_data['Revenue']:,.2f}")
+                st.metric(label="Revenue", value=f"${latest_data['Revenue']:,.2f}")
             with col3:
-                st.metric(label="Revenue/GMV Ratio", value=f"{(latest_month_data['Revenue'] / latest_month_data['GMV'] * 100):.2f}%")
+                st.metric(label="Revenue/GMV Ratio", value=f"{(latest_data['Revenue'] / latest_data['GMV'] * 100):.2f}%")
             
             col4, col5, col6 = st.columns(3)
             with col4:
-                st.metric(label="Authorization Rate", value=f"{latest_month_data['Authorization Rate']:.2f}%")
+                st.metric(label="Authorization Rate", value=f"{latest_data['Authorization Rate']:.2f}%")
             with col5:
-                st.metric(label="Dispute Rate", value=f"{latest_month_data['Dispute Rate']:.2f}%")
+                st.metric(label="Dispute Rate", value=f"{latest_data['Dispute Rate']:.2f}%")
             with col6:
-                st.metric(label="Fraud Rate", value=f"{latest_month_data['Fraud Rate']:.2f}%")
+                st.metric(label="Fraud Rate", value=f"{latest_data['Fraud Rate']:.2f}%")
 
             # Plotting the data
-            df = pd.DataFrame(monthly_data)
+            df = pd.DataFrame(rolling_data)
             st.subheader("Trend Over the Past 6 Months")
-            for metric in ['GMV', 'Revenue', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']:
-                st.line_chart(df.set_index('Month')[metric], height=300, use_container_width=True)
+            metrics_to_plot = ['GMV', 'Revenue', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
+            for i in range(0, len(metrics_to_plot), 2):
+                cols = st.columns(2)
+                for j in range(2):
+                    if i + j < len(metrics_to_plot):
+                        metric = metrics_to_plot[i + j]
+                        with cols[j]:
+                            chart = st.line_chart(df.set_index('Date')[metric], height=300, use_container_width=True)
+                            chart.pyplot.xlabel('Date')
+                            chart.pyplot.ylabel(metric)
+                            st.caption(metric)
 
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
@@ -51,11 +60,10 @@ def main():
 def generate_dashboard_metrics():
     # Define the time period for the data (past 6 months)
     today = datetime.date.today()
-    last_day_last_month = today.replace(day=1) - datetime.timedelta(days=1)
-    first_day_six_months_ago = last_day_last_month - datetime.timedelta(days=180)
+    start_date = today - datetime.timedelta(days=180)
 
-    monthly_data = {
-        'Month': [],
+    rolling_data = {
+        'Date': [],
         'GMV': [],
         'Revenue': [],
         'Authorization Rate': [],
@@ -63,16 +71,16 @@ def generate_dashboard_metrics():
         'Fraud Rate': []
     }
 
-    for month_start in pd.date_range(start=first_day_six_months_ago, end=last_day_last_month, freq='MS'):
-        month_end = (month_start + pd.offsets.MonthEnd(1)).date()
-        month_start_unix = int(time.mktime(month_start.timetuple()))
-        month_end_unix = int(time.mktime(month_end.timetuple()))
+    for day in pd.date_range(start=start_date, end=today, freq='D'):
+        day_end = day + datetime.timedelta(days=13)  # 14 days including the start day
+        day_start_unix = int(time.mktime(day.timetuple()))
+        day_end_unix = int(time.mktime(day_end.timetuple()))
 
         payment_intents = stripe.PaymentIntent.list(
-            created={'gte': month_start_unix, 'lte': month_end_unix}
+            created={'gte': day_start_unix, 'lte': day_end_unix}
         )
         disputes = stripe.Dispute.list(
-            created={'gte': month_start_unix, 'lte': month_end_unix}
+            created={'gte': day_start_unix, 'lte': day_end_unix}
         )
 
         # Calculate metrics as before
@@ -92,14 +100,14 @@ def generate_dashboard_metrics():
         revenue = gmv - refunded_amount - chargeback_amount
 
         # Store data
-        monthly_data['Month'].append(month_start.strftime('%Y-%m'))
-        monthly_data['GMV'].append(gmv)
-        monthly_data['Revenue'].append(revenue)
-        monthly_data['Authorization Rate'].append(authorization_rate)
-        monthly_data['Dispute Rate'].append(dispute_rate)
-        monthly_data['Fraud Rate'].append(fraud_rate)
+        rolling_data['Date'].append(day.strftime('%Y-%m-%d'))
+        rolling_data['GMV'].append(gmv)
+        rolling_data['Revenue'].append(revenue)
+        rolling_data['Authorization Rate'].append(authorization_rate)
+        rolling_data['Dispute Rate'].append(dispute_rate)
+        rolling_data['Fraud Rate'].append(fraud_rate)
 
-    return monthly_data
+    return rolling_data
 
 if __name__ == "__main__":
     main()
