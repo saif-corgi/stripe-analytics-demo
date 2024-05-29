@@ -35,19 +35,19 @@ def main():
                 st.metric(label="Fraud Rate", value=f"{latest_month_data['Fraud Rate']:.2f}%")
             
             # Plotting the data
-            st.subheader("Weekly Trends Over the Past 6 Months")
+            st.subheader("Monthly Trends Over the Past 6 Months")
             metrics_to_plot = ['GMV', 'Revenue', 'Revenue/GMV Ratio', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
             col1, col2 = st.columns(2)
             for i, metric in enumerate(metrics_to_plot):
-                chart_data = weekly_data.set_index('Date')[metric]
+                chart_data = monthly_data.set_index('Date')[metric]
                 with col1 if i % 2 == 0 else col2:
+                    st.markdown(f"**{metric}**", unsafe_allow_html=True)
                     if metric in ['GMV', 'Revenue']:
                         st.bar_chart(chart_data, height=300, use_container_width=True)
                     elif metric == 'Revenue/GMV Ratio':
-                        st.line_chart((weekly_data['Revenue'] / weekly_data['GMV'] * 100), height=300, use_container_width=True)
+                        st.line_chart((monthly_data['Revenue'] / monthly_data['GMV'] * 100), height=300, use_container_width=True)
                     else:
                         st.line_chart(chart_data, height=300, use_container_width=True)
-                    st.caption(metric)  # Label each chart
 
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
