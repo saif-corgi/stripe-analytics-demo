@@ -20,25 +20,27 @@ def main():
 
             # Display the metrics for the latest month
             st.subheader(f"Metrics for {latest_month}")
-            col1, col2, col3, col4, col5 = st.columns(5)
+            col1, col2, col3 = st.columns(3)
             with col1:
                 st.metric(label="GMV", value=f"${latest_month_data['GMV']:,.2f}")
             with col2:
                 st.metric(label="Revenue", value=f"${latest_month_data['Revenue']:,.2f}")
             with col3:
                 st.metric(label="Revenue/GMV Ratio", value=f"{(latest_month_data['Revenue'] / latest_month_data['GMV'] * 100):.2f}%")
+            
+            col4, col5, col6 = st.columns(3)
             with col4:
                 st.metric(label="Authorization Rate", value=f"{latest_month_data['Authorization Rate']:.2f}%")
             with col5:
                 st.metric(label="Dispute Rate", value=f"{latest_month_data['Dispute Rate']:.2f}%")
-            with col5:
+            with col6:
                 st.metric(label="Fraud Rate", value=f"{latest_month_data['Fraud Rate']:.2f}%")
 
             # Plotting the data
             df = pd.DataFrame(monthly_data)
             st.subheader("Trend Over the Past 6 Months")
             for metric in ['GMV', 'Revenue', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']:
-                st.line_chart(df.set_index('Month')[metric], height=300, use_container_width=True, title=f"Trend for {metric}")
+                st.line_chart(df.set_index('Month')[metric], height=300, use_container_width=True)
 
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
