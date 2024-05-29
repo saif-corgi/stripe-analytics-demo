@@ -59,12 +59,11 @@ def main():
             # Plotting the data for the past 12 months
             st.subheader("Monthly Trends Over the Past 12 Months")
             metrics_to_plot = ['GMV', 'Revenue', 'Revenue/GMV Ratio', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
-            col1, col2 = st.columns(2)
-            for i, metric in enumerate(metrics_to_plot):
+            for metric in metrics_to_plot:
                 chart_data = monthly_data[['Date', metric]].tail(12)
                 fig = px.line(chart_data, x='Date', y=metric, title=metric, markers=True, template='plotly_white')
-                with col1 if i % 2 == 0 else col2:
-                    st.plotly_chart(fig, use_container_width=True)
+                fig.update_layout(height=300)  # Adjust the height as necessary
+                st.plotly_chart(fig, use_container_width=True)
 
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
