@@ -2,7 +2,6 @@
 # End Generation Here
 import streamlit as st
 import datetime
-from flask import Flask, render_template
 import stripe
 
 # Streamlit app to input Stripe API key and generate dashboard
