@@ -55,8 +55,6 @@ def main():
                 st.metric(label="Fraud Rate", value=metrics['Fraud Rate'])
                 with st.expander("See Details"):
                     st.write(evaluation['Fraud Rate'])
-            except Exception as e:
-                st.error(f"Failed to generate dashboard: {str(e)}")
     else:
         st.warning("Please enter a valid Stripe API key to generate the dashboard.")
         
