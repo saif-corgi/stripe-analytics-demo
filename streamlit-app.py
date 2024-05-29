@@ -34,18 +34,18 @@ def main():
             with col6:
                 st.metric(label="Fraud Rate", value=f"{latest_month_data['Fraud Rate']:.2f}%")
             
-            # Plotting the data
-            st.subheader("Monthly Trends Over the Past 6 Months")
+            # Plotting the data for the past 12 months
+            st.subheader("Monthly Trends Over the Past 12 Months")
             metrics_to_plot = ['GMV', 'Revenue', 'Revenue/GMV Ratio', 'Authorization Rate', 'Dispute Rate', 'Fraud Rate']
             col1, col2 = st.columns(2)
             for i, metric in enumerate(metrics_to_plot):
-                chart_data = monthly_data.set_index('Date')[metric]
+                chart_data = monthly_data.set_index('Date')[metric].tail(12)  # Select only the last 12 months
                 with col1 if i % 2 == 0 else col2:
                     st.markdown(f"**{metric}**", unsafe_allow_html=True)
                     if metric in ['GMV', 'Revenue']:
                         st.bar_chart(chart_data, height=300, use_container_width=True)
                     elif metric == 'Revenue/GMV Ratio':
-                        st.line_chart((monthly_data['Revenue'] / monthly_data['GMV'] * 100), height=300, use_container_width=True)
+                        st.line_chart((monthly_data['Revenue'] / monthly_data['GMV'] * 100).tail(12), height=300, use_container_width=True)
                     else:
                         st.line_chart(chart_data, height=300, use_container_width=True)
 
@@ -56,9 +56,9 @@ def main():
         
     
 def generate_dashboard_metrics():
-    # Define the time period for the data (past 6 months)
+    # Define the time period for the data (past 12 months)
     today = datetime.date.today()
-    start_date = today - datetime.timedelta(days=180)
+    start_date = today - datetime.timedelta(days=365)
 
     # Initialize an empty list to store weekly and monthly data dictionaries
     weekly_data_list = []
