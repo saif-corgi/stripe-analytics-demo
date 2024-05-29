@@ -2,7 +2,6 @@
 # End Generation Here
 import streamlit as st
 import datetime
-pip install stripe
 import stripe
 
 # Streamlit app to input Stripe API key and generate dashboard
