@@ -38,19 +38,13 @@ st.markdown(
     .stMetricLabel{
         color: #f97e04;
     }
+    .st-emotion-cache-1jmvea6 e1nzilvr4{
+        color: #f97e04;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
-
-# Custom CSS to change metric label color to white
-st.markdown("""
-<style>
-.css-1r6slb0 {
-    color: white !important;
-}
-</style>
-""", unsafe_allow_html=True)
 
 def main():
     # st.title("Stripe Metrics Dashboard Generator")
