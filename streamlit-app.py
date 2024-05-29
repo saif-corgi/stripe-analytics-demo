@@ -67,6 +67,7 @@ def main():
                 fig.update_traces(line_color='orange')  # Set line color to orange
                 fig.update_layout(
                     height=300,  # Adjust the height as necessary
+                    margin=dict(l=20, r=20, t=30, b=20),  # Reduce margins to reduce whitespace (left, right, top, bottom)
                     plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
                     paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
                     font_color='#ffffff',  # Set font and title color to white
