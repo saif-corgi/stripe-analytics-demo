@@ -41,17 +41,35 @@ def main():
     
     api_provider = None
     col1, col2, col3 = st.columns(3)
-    button_style = "padding:10px;width:100px;height:100px;border:none;background-size:cover;"
-    with col1:
-        if st.button("", style=button_style + "background-image:url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true');"):
-            api_provider = 'Stripe'
-    with col2:
-        if st.button("", style=button_style + "background-image:url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true');"):
-            api_provider = 'Adyen'
-    with col3:
-        if st.button("", style=button_style + "background-image:url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true');"):
-            api_provider = 'Shopify'
+    button_style = """
+    <style>
+    .button {
+        padding: 10px;
+        width: 100px;
+        height: 100px;
+        border: none;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    </style>
+    """
+    st.markdown(button_style, unsafe_allow_html=True)
     
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("", key="stripe_button"):
+            api_provider = 'Stripe'
+            st.markdown("<style>#stripe_button {background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true');}</style>", unsafe_allow_html=True)
+    with col2:
+        if st.button("", key="adyen_button"):
+            api_provider = 'Adyen'
+            st.markdown("<style>#adyen_button {background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true');}</style>", unsafe_allow_html=True)
+    with col3:
+        if st.button("", key="shopify_button"):
+            api_provider = 'Shopify'
+            st.markdown("<style>#shopify_button {background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true');}</style>", unsafe_allow_html=True)
+        
     if api_provider == 'Stripe':
         api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
     elif api_provider == 'Adyen':
