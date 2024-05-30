@@ -108,7 +108,7 @@ def main():
     #     if st.button("Schedule a call with us for Shopify"):
     #         st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)      
             
-    if api_provider == 'Stripe':
+    if api_key:
         stripe.api_key = api_key
         try:
             monthly_data, weekly_data = generate_dashboard_metrics()
