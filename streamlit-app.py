@@ -42,9 +42,6 @@ def main():
     api_provider = None
     col1, col2, col3 = st.columns(3)
     
-    import streamlit as st
-
-    # URL or path to your image
     image_url_stripe = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true"
     image_url_adyen = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true"
     image_url_shopify = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true"
@@ -80,7 +77,7 @@ def main():
         api_key = st.text_input("Enter your Stripe API key:", type="password")
         if api_key:
             st.session_state.api_provider = 'Stripe'
-            # Proceed with additional code for Stripe
+            api_provider = 'Stripe'
     elif st.session_state.selected_provider == 'Adyen':
         st.session_state.api_provider = 'Adyen'
         if st.button("Schedule a call with us for Adyen"):
