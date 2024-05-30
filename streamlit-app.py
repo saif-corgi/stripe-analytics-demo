@@ -42,19 +42,38 @@ def main():
     api_provider = None
     col1, col2, col3 = st.columns(3)
     
-    import streamlit.components.v1 as components
+  # URL or path to your image
+    image_url_stripe = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true"
+    image_url_adyen = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true"
+    image_url_shopify = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true"
 
-    # Declare the custom component for image buttons
-    image_button = components.declare_component("image_button", path="./path_to_your_component")
+    # Define a key for the button-like image in the session state
+    if 'stripe_button_clicked' not in st.session_state:
+        st.session_state.stripe_button_clicked = False
+    if 'adyen_button_clicked' not in st.session_state:
+        st.session_state.adyen_button_clicked = False
+    if 'shopify_button_clicked' not in st.session_state:
+        st.session_state.shopify_button_clicked = False
 
+    def on_click_stripe():
+        st.session_state.stripe_button_clicked = True
+    def on_click_adyen():
+        st.session_state.adyen_button_clicked = True
+    def on_click_shopify():
+        st.session_state.shopify_button_clicked = True
+
+    # Using HTML to create a clickable image
     with col1:
-        if image_button(url="https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true", key="stripe_button"):
+        st.markdown(f"<a href='javascript:void(0);' onclick='on_click_stripe()'><img src='{image_url_stripe}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
+        if st.session_state.stripe_button_clicked:
             api_provider = 'Stripe'
     with col2:
-        if image_button(url="https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true", key="adyen_button"):
+        st.markdown(f"<a href='javascript:void(0);' onclick='on_click_adyen()'><img src='{image_url_adyen}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
+        if st.session_state.adyen_button_clicked:
             api_provider = 'Adyen'
     with col3:
-        if image_button(url="https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true", key="shopify_button"):
+        st.markdown(f"<a href='javascript:void(0);' onclick='on_click_shopify()'><img src='{image_url_shopify}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
+        if st.session_state.shopify_button_clicked:
             api_provider = 'Shopify'
     
     if api_provider == 'Stripe':
