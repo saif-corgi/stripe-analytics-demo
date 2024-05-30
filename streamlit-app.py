@@ -23,7 +23,7 @@ with col2:
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
-   st.markdown("""
+    st.markdown("""
     <style>
         .title-style {
             text-align: center;
