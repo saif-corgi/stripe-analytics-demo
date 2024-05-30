@@ -48,6 +48,7 @@ def main():
         if st.button("![Shopify](https://images.app.goo.gl/hLruxnyEJawFibYx9)"):
             api_provider = 'Shopify'
     if api_provider == 'Stripe':
+        pass
         api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
         stripe.api_key = api_key
     elif api_provider == 'Adyen':
