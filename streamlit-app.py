@@ -60,17 +60,17 @@ def main():
     with col1:
         if st.button("", key="stripe", help="Click to select Stripe as your provider"):
             select_provider("Stripe")
-        st.image(image_url_stripe, width=100)
+        st.image(image_url_stripe, width=200)
     
     with col2:
         if st.button("", key="adyen", help="Click to select Adyen as your provider"):
             select_provider("Adyen")
-        st.image(image_url_adyen, width=100)
+        st.image(image_url_adyen, width=200)
     
     with col3:
         if st.button("", key="shopify", help="Click to select Shopify as your provider"):
             select_provider("Shopify")
-        st.image(image_url_shopify, width=100)
+        st.image(image_url_shopify, width=200)
     
     # Check which provider was selected and respond accordingly
     if st.session_state.selected_provider == 'Stripe':
