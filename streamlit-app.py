@@ -21,46 +21,17 @@ col1, col2, col3 = st.columns([1,1,1])
 with col2:
     st.image("https://github.com/saif-corgi/stripe-analytics-demo/blob/main/CorgiAI%20logo%20(white%20background)%201200.png?raw=true", width=300)
 
-# st.markdown(
-#     """
-#     <style>
-#     .stApp {
-#         background-color: #0b5394ff;
-#         color: #ffffff;
-#     }
-#     h1, h2, h3, h4, h5, h6 {
-#         color: #ffffff;
-#     }
-#     .stTextInput{
-#         color: #ffffff;
-#     }
-#     .stMetricLabel{
-#         color: #f97e04;
-#     }
-#     .st-emotion-cache-1jmvea6 e1nzilvr4{
-#         color: #f97e04;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
-
-# st.markdown(
-#     """
-#     <style>
-#     .stApp {
-#         background-color: #0b5394ff;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
-
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
-    col1, col2, col3 = st.columns([1,1,1])
-    with col2:
-        st.title("Stripe Metrics Dashboard Generator")
+   st.markdown("""
+    <style>
+        .title-style {
+            text-align: center;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+    st.markdown('<p class="title-style">Stripe Metrics Dashboard Generator</p>', unsafe_allow_html=True)
+
     api_key = st.text_input("Enter your Stripe API key:", type="password")
 
     if api_key:
