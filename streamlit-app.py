@@ -24,8 +24,14 @@ with col2:
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
     st.markdown("<h1 style='text-align: center; color: black;'>Corgi Metrics Preview</h1>", unsafe_allow_html=True)
-    api_key = st.text_input("Enter your Stripe API key:", type="password")
-
+    api_key = st.text_input("Enter your API key:", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
+    st.markdown("""
+    <style>
+    input[data-baseweb="input"] {
+        font-size: 18px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     if api_key:
         stripe.api_key = api_key
         try:
