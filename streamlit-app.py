@@ -48,21 +48,6 @@ img {
 </style>
 """, unsafe_allow_html=True)
 
-# st.markdown("""
-# <style>
-# div.stButton > button:first-child {
-#     display: none;  /* Hide the button itself to only show the image */
-# }
-# img {
-#     width: 100% !important;  /* Adjust width to fit the container */
-#     height: auto !important;  /* Adjust height to maintain aspect ratio */
-#     display: block;  /* Remove extra space below the image */
-#     margin-left: auto;
-#     margin-right: auto;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
