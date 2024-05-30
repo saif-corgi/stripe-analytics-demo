@@ -46,7 +46,7 @@ def main():
             st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
     elif api_provider == 'Shopify':
         if st.button("Schedule a call with us"):
-        st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
+            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
     if api_key:
         stripe.api_key = api_key
         try:
