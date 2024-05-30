@@ -41,14 +41,15 @@ def main():
     
     api_provider = None
     col1, col2, col3 = st.columns(3)
+    button_style = "padding:10px;width:100px;height:100px;border:none;background-size:cover;"
     with col1:
-        if st.button("![Stripe](https://images.app.goo.gl/xx7a1YmZ4G5cfVv76)"):
+        if st.button("", style=button_style + "background-image:url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true');"):
             api_provider = 'Stripe'
     with col2:
-        if st.button("![Adyen](https://images.app.goo.gl/bXLoBhEZV51nP5GaA)"):
+        if st.button("", style=button_style + "background-image:url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true');"):
             api_provider = 'Adyen'
     with col3:
-        if st.button("![Shopify](https://images.app.goo.gl/hLruxnyEJawFibYx9)"):
+        if st.button("", style=button_style + "background-image:url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true');"):
             api_provider = 'Shopify'
     
     if api_provider == 'Stripe':
