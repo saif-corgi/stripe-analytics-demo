@@ -9,7 +9,6 @@ import plotly.express as px
 
 # Setting up theme customization via Python
 st.set_page_config(
-    layout="wide",
     page_title="Corgi Labs Payments Metrics Preview",
     menu_items={
         'Get Help': 'https://www.corgilabs.ai',
