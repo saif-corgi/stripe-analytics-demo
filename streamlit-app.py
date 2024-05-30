@@ -19,7 +19,7 @@ st.set_page_config(
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,1,1])
 with col2:
-    st.image("https://github.com/saif-corgi/stripe-analytics-demo/blob/main/CorgiAI%20logo%20(dark%20background).png?raw=true", width=300)
+    st.image("https://github.com/saif-corgi/stripe-analytics-demo/blob/main/CorgiAI%20logo%20(white%20background)%201200.png?raw=true", width=300)
 
 # st.markdown(
 #     """
