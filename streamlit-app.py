@@ -36,7 +36,6 @@ with col2:
 def main():
     st.markdown("<h1 style='text-align: center; color: black;'>Corgi Metrics Preview</h1>", unsafe_allow_html=True)
     api_key = st.text_input("Enter your API key:", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
-    """, unsafe_allow_html=True)
     if api_key:
         stripe.api_key = api_key
         try:
