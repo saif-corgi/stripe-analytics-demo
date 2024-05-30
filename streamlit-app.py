@@ -23,7 +23,7 @@ with col2:
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
-   col1, col2, col3 = st.columns([1,2,1])
+    col1, col2, col3 = st.columns([1,2,1])
     with col2:
         st.markdown("<h1 style='text-align: center; color: white;'>Stripe Metrics Dashboard Generator</h1>", unsafe_allow_html=True)
     api_key = st.text_input("Enter your Stripe API key:", type="password")
