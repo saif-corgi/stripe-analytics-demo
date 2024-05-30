@@ -60,16 +60,37 @@ def main():
     with col1:
         if st.button("", key="stripe_button"):
             api_provider = 'Stripe'
-            st.markdown("<style>#stripe_button {background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true');}</style>", unsafe_allow_html=True)
     with col2:
         if st.button("", key="adyen_button"):
             api_provider = 'Adyen'
-            st.markdown("<style>#adyen_button {background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true');}</style>", unsafe_allow_html=True)
     with col3:
         if st.button("", key="shopify_button"):
             api_provider = 'Shopify'
-            st.markdown("<style>#shopify_button {background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true');}</style>", unsafe_allow_html=True)
-        
+
+    # Apply the background images to the buttons using CSS
+    st.markdown("""
+    <style>
+    #stripe_button button {
+        background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true');
+        background-size: cover;
+        height: 100px;
+        width: 100px;
+    }
+    #adyen_button button {
+        background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true');
+        background-size: cover;
+        height: 100px;
+        width: 100px;
+    }
+    #shopify_button button {
+        background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true');
+        background-size: cover;
+        height: 100px;
+        width: 100px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
     if api_provider == 'Stripe':
         api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
     elif api_provider == 'Adyen':
