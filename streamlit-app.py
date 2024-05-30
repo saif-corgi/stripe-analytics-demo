@@ -37,7 +37,9 @@ with col2:
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
     st.markdown("<h1 style='text-align: center; color: black; margin-bottom: 20px;'>Payments & Fraud Overview</h1>", unsafe_allow_html=True)
-    api_provider = st.radio("Select your API provider:", ('Stripe', 'Adyen', 'Shopify'))
+    api_provider = st.radio("Select your API provider:", 
+                            options=['Stripe', 'Adyen', 'Shopify'],
+                            format_func=lambda x: f"![{x}](https://images.app.goo.gl/{'xx7a1YmZ4G5cfVv76' if x == 'Stripe' else 'bXLoBhEZV51nP5GaA' if x == 'Adyen' else 'hLruxnyEJawFibYx9'})")
     if api_provider == 'Stripe':
         api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
         stripe.api_key = api_key
