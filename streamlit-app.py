@@ -48,16 +48,14 @@ def main():
         if st.button("![Shopify](https://images.app.goo.gl/hLruxnyEJawFibYx9)"):
             api_provider = 'Shopify'
     if api_provider == 'Stripe':
-        pass
         api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
-        stripe.api_key = api_key
     elif api_provider == 'Adyen':
         if st.button("Schedule a call with us"):
             st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
     elif api_provider == 'Shopify':
         if st.button("Schedule a call with us"):
             st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
-    if api_key:
+    if api_provider == 'Stripe':
         stripe.api_key = api_key
         try:
             monthly_data, weekly_data = generate_dashboard_metrics()
