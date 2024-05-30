@@ -23,8 +23,8 @@ img {
     height: 150%;  /* Increase the height to simulate cropping */
     object-fit: cover;  /* Ensure the dimensions cover the area without distortion */
     object-position: center;  /* Center the image to focus on the core part */
-    margin-bottom: -25%;  /* Adjust according to your specific needs */
-    margin-top: -25%;  /* Adjust according to your specific needs */
+    margin-bottom: -20%;  /* Adjust according to your specific needs */
+    margin-top: -20%;  /* Adjust according to your specific needs */
 }
 </style>
 """, unsafe_allow_html=True)
