@@ -42,48 +42,37 @@ def main():
     api_provider = None
     col1, col2, col3 = st.columns(3)
     
-  # URL or path to your image
     image_url_stripe = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true"
     image_url_adyen = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true"
     image_url_shopify = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true"
 
     # Define a key for the button-like image in the session state
-    if 'stripe_button_clicked' not in st.session_state:
-        st.session_state.stripe_button_clicked = False
-    if 'adyen_button_clicked' not in st.session_state:
-        st.session_state.adyen_button_clicked = False
-    if 'shopify_button_clicked' not in st.session_state:
-        st.session_state.shopify_button_clicked = False
+    if 'selected_provider' not in st.session_state:
+        st.session_state.selected_provider = None
 
-    def on_click_stripe():
-        st.session_state.stripe_button_clicked = True
-    def on_click_adyen():
-        st.session_state.adyen_button_clicked = True
-    def on_click_shopify():
-        st.session_state.shopify_button_clicked = True
+    def select_provider(provider):
+        st.session_state.selected_provider = provider
 
     # Using HTML to create a clickable image
     with col1:
-        st.markdown(f"<a href='javascript:void(0);' onclick='on_click_stripe()'><img src='{image_url_stripe}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
-        if st.session_state.stripe_button_clicked:
-            api_provider = 'Stripe'
+        st.markdown(f"<a href='javascript:void(0);' onclick='select_provider(\"Stripe\")'><img src='{image_url_stripe}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
     with col2:
-        st.markdown(f"<a href='javascript:void(0);' onclick='on_click_adyen()'><img src='{image_url_adyen}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
-        if st.session_state.adyen_button_clicked:
-            api_provider = 'Adyen'
+        st.markdown(f"<a href='javascript:void(0);' onclick='select_provider(\"Adyen\")'><img src='{image_url_adyen}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
     with col3:
-        st.markdown(f"<a href='javascript:void(0);' onclick='on_click_shopify()'><img src='{image_url_shopify}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
-        if st.session_state.shopify_button_clicked:
-            api_provider = 'Shopify'
-    
-    if api_provider == 'Stripe':
-        api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
-    elif api_provider == 'Adyen':
+        st.markdown(f"<a href='javascript:void(0);' onclick='select_provider(\"Shopify\")'><img src='{image_url_shopify}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
+
+    if st.session_state.selected_provider == 'Stripe':
+        api_key = st.text_input(r"$\textsf{\Large Enter your Stripe API key:}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
+        if api_key:
+            api_provider == 'Stripe'
+    elif st.session_state.selected_provider == 'Adyen':
+        api_provider == 'Adyen'
         if st.button("Schedule a call with us"):
-            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
-    elif api_provider == 'Shopify':
+            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)        
+    elif st.session_state.selected_provider == 'Shopify':
+        api_provider == 'Shopify'
         if st.button("Schedule a call with us"):
-            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
+            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)     
             
     if api_provider == 'Stripe':
         stripe.api_key = api_key
