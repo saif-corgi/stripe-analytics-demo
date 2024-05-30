@@ -19,7 +19,7 @@ st.set_page_config(
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
-    st.image("https://github.com/saif-corgi/stripe-analytics-demo/blob/main/CorgiAI%20logo%20(white%20background)%201200.png?raw=true", width=300)
+    st.image("https://github.com/saif-corgi/stripe-analytics-demo/blob/main/CorgiAI%20logo%20(white%20background)%201200.png?raw=true", width=300, use_column_width='auto')
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
