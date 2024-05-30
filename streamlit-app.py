@@ -41,55 +41,21 @@ def main():
     
     api_provider = None
     col1, col2, col3 = st.columns(3)
-    button_style = """
-    <style>
-    .button {
-        padding: 10px;
-        width: 100px;
-        height: 100px;
-        border: none;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-    </style>
-    """
-    st.markdown(button_style, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
+    import streamlit.components.v1 as components
+
+    # Declare the custom component for image buttons
+    image_button = components.declare_component("image_button", path="./path_to_your_component")
+
     with col1:
-        if st.button("", key="stripe_button"):
+        if image_button(url="https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true", key="stripe_button"):
             api_provider = 'Stripe'
     with col2:
-        if st.button("", key="adyen_button"):
+        if image_button(url="https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true", key="adyen_button"):
             api_provider = 'Adyen'
     with col3:
-        if st.button("", key="shopify_button"):
+        if image_button(url="https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true", key="shopify_button"):
             api_provider = 'Shopify'
-
-    # Apply the background images to the buttons using CSS
-    st.markdown("""
-    <style>
-    #stripe_button button {
-        background-image: url(stripe.png);
-        background-size: cover;
-        height: 100px;
-        width: 100px;
-    }
-    #adyen_button button {
-        background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true');
-        background-size: cover;
-        height: 100px;
-        width: 100px;
-    }
-    #shopify_button button {
-        background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true');
-        background-size: cover;
-        height: 100px;
-        width: 100px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
     
     if api_provider == 'Stripe':
         api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
@@ -99,6 +65,7 @@ def main():
     elif api_provider == 'Shopify':
         if st.button("Schedule a call with us"):
             st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
+            
     if api_provider == 'Stripe':
         stripe.api_key = api_key
         try:
