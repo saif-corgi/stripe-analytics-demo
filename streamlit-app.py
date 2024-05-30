@@ -9,7 +9,7 @@ import plotly.express as px
 
 # Setting up theme customization via Python
 st.set_page_config(
-    page_title="Corgi Labs Payments Metrics Preview",
+    page_title="Payments & Fraud Overview",
     menu_items={
         'Get Help': 'https://www.corgilabs.ai',
         'About': "# Get powerful insights on your payments, using only your Stripe API key!"
