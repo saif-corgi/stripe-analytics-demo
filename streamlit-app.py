@@ -71,7 +71,7 @@ def main():
     st.markdown("""
     <style>
     #stripe_button button {
-        background-image: url('https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true');
+        background-image: url(stripe.png);
         background-size: cover;
         height: 100px;
         width: 100px;
