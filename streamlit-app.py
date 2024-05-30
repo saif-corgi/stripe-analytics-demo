@@ -16,17 +16,6 @@ st.set_page_config(
     }
 )
 
-st.markdown("""
-<style>
-input {
-    font-size: 20px !important;  /* Increase font size */
-}
-div.stTextInput > label {
-    font-size: 20px !important;  /* Increase label font size */
-}
-</style>
-""", unsafe_allow_html=True)
-
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
@@ -35,7 +24,7 @@ with col2:
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
     st.markdown("<h1 style='text-align: center; color: black;'>Corgi Metrics Preview</h1>", unsafe_allow_html=True)
-    api_key = st.text_input("<h3 style='color: black;'>Enter your API key:</h3>", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
+    api_key = st.text_input("<h3 style='color: black;'>Enter your API key:</h3>", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input", unsafe_allow_html=True)
     
     # "<h3 style='color: black;'>Enter your API key:</h3>"
     
