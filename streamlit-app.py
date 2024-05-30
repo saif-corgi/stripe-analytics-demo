@@ -16,10 +16,23 @@ st.set_page_config(
     }
 )
 
+st.markdown("""
+<style>
+img {
+    width: 150%;  /* Increase the size to simulate cropping */
+    height: 150%;  /* Increase the height to simulate cropping */
+    object-fit: cover;  /* Ensure the dimensions cover the area without distortion */
+    object-position: center;  /* Center the image to focus on the core part */
+    margin-left: -25%;  /* Adjust according to your specific needs */
+    margin-top: -25%;  /* Adjust according to your specific needs */
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Example using a direct link from Google Drive:
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
-    st.image("https://github.com/saif-corgi/stripe-analytics-demo/blob/main/CorgiAI%20logo%20(white%20background)%201200.png?raw=true", width=300, use_column_width='auto')
+    st.image("https://github.com/saif-corgi/stripe-analytics-demo/blob/main/CorgiAI%20logo%20(white%20background)%201200.png?raw=true", width=300)
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
