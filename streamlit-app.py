@@ -42,37 +42,53 @@ def main():
     api_provider = None
     col1, col2, col3 = st.columns(3)
     
+    import streamlit as st
+
+    # URL or path to your image
     image_url_stripe = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true"
     image_url_adyen = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/adyen.png?raw=true"
     image_url_shopify = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/shopify.png?raw=true"
-
+    
     # Define a key for the button-like image in the session state
     if 'selected_provider' not in st.session_state:
         st.session_state.selected_provider = None
-
+    
     def select_provider(provider):
         st.session_state.selected_provider = provider
-
-    # Using HTML to create a clickable image
+    
+    # Streamlit columns for layout
+    col1, col2, col3 = st.columns(3)
+    
+    # Using buttons to trigger provider selection
     with col1:
-        st.markdown(f"<a href='javascript:void(0);' onclick='select_provider(\"Stripe\")'><img src='{image_url_stripe}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
+        if st.button("", key="stripe", help="Click to select Stripe as your provider"):
+            select_provider("Stripe")
+        st.image(image_url_stripe, width=100)
+    
     with col2:
-        st.markdown(f"<a href='javascript:void(0);' onclick='select_provider(\"Adyen\")'><img src='{image_url_adyen}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
+        if st.button("", key="adyen", help="Click to select Adyen as your provider"):
+            select_provider("Adyen")
+        st.image(image_url_adyen, width=100)
+    
     with col3:
-        st.markdown(f"<a href='javascript:void(0);' onclick='select_provider(\"Shopify\")'><img src='{image_url_shopify}' alt='Clickable image' style='width: 100px; height: auto;'></a>", unsafe_allow_html=True)
-
+        if st.button("", key="shopify", help="Click to select Shopify as your provider"):
+            select_provider("Shopify")
+        st.image(image_url_shopify, width=100)
+    
+    # Check which provider was selected and respond accordingly
     if st.session_state.selected_provider == 'Stripe':
-        api_key = st.text_input(r"$\textsf{\Large Enter your Stripe API key:}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
+        api_key = st.text_input("Enter your Stripe API key:", type="password")
         if api_key:
-            api_provider == 'Stripe'
+            st.session_state.api_provider = 'Stripe'
+            # Proceed with additional code for Stripe
     elif st.session_state.selected_provider == 'Adyen':
-        api_provider == 'Adyen'
-        if st.button("Schedule a call with us"):
-            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)        
+        st.session_state.api_provider = 'Adyen'
+        if st.button("Schedule a call with us for Adyen"):
+            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
     elif st.session_state.selected_provider == 'Shopify':
-        api_provider == 'Shopify'
-        if st.button("Schedule a call with us"):
-            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)     
+        st.session_state.api_provider = 'Shopify'
+        if st.button("Schedule a call with us for Shopify"):
+            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)      
             
     if api_provider == 'Stripe':
         stripe.api_key = api_key
