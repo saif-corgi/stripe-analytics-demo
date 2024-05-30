@@ -18,13 +18,15 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+div.stButton > button:first-child {
+    display: none;  /* Hide the button itself to only show the image */
+}
 img {
-    width: 150%;  /* Increase the size to simulate cropping */
-    height: 150%;  /* Increase the height to simulate cropping */
-    object-fit: cover;  /* Ensure the dimensions cover the area without distortion */
-    object-position: center;  /* Center the image to focus on the core part */
-    margin-bottom: -20%;  /* Adjust according to your specific needs */
-    margin-top: -20%;  /* Adjust according to your specific needs */
+    width: 100% !important;  /* Adjust width to fit the container */
+    height: auto !important;  /* Adjust height to maintain aspect ratio */
+    display: block;  /* Remove extra space below the image */
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>
 """, unsafe_allow_html=True)
