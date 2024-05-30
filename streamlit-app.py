@@ -97,9 +97,12 @@ def main():
                     if metric in ['GMV', 'Revenue']:
                         st.bar_chart(chart_data, height=300, use_container_width=True)
                     elif metric == 'Revenue/GMV Ratio':
-                        st.line_chart((monthly_data['Revenue'] / monthly_data['GMV'] * 100).tail(12), height=300, use_container_width=True)
+                        chart_data = (monthly_data['Revenue'] / monthly_data['GMV'] * 100).tail(12)
+                        chart_data.index = chart_data.index.strftime('%B %Y')
+                        st.line_chart(chart_data, height=300, use_container_width=True, disable_xscroll=True, line_width=3)
                     else:
-                        st.line_chart(chart_data, height=300, use_container_width=True)
+                        chart_data.index = chart_data.index.strftime('%B %Y')
+                        st.line_chart(chart_data, height=300, use_container_width=True, disable_xscroll=True, line_width=3)
 
         except Exception as e:
             st.error(f"Failed to generate dashboard: {str(e)}")
