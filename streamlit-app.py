@@ -36,7 +36,7 @@ with col2:
 
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
-    st.markdown("<h1 style='text-align: center; color: black;'>Corgi Metrics Preview</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: black; margin-bottom: 20px;'>Corgi Metrics Preview</h1>", unsafe_allow_html=True)
     api_key = st.text_input(r"$\textsf{\Large Enter your API key:}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
 
     if api_key:
