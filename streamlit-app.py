@@ -59,6 +59,8 @@ def main():
     # st.markdown("<h2 style='text-align: center; color: black; margin-bottom: 20px;'>Select a payment provider</h2>", unsafe_allow_html=True)
     
     api_provider = 'Stripe'
+    api_key = st.text_input("Enter your Stripe API key:", type="password")
+
     # col1, col2, col3 = st.columns(3)
     
     # image_url_stripe = "https://github.com/saif-corgi/stripe-analytics-demo/blob/main/stripe.png?raw=true"
