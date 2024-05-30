@@ -37,8 +37,16 @@ with col2:
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
     st.markdown("<h1 style='text-align: center; color: black; margin-bottom: 20px;'>Payments & Fraud Overview</h1>", unsafe_allow_html=True)
-    api_key = st.text_input(r"$\textsf{\Large Enter your API key:}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
-
+    api_provider = st.radio("Select your API provider:", ('Stripe', 'Adyen', 'Shopify'))
+    if api_provider == 'Stripe':
+        api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
+        stripe.api_key = api_key
+    elif api_provider == 'Adyen':
+        if st.button("Schedule a call with us"):
+            st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
+    elif api_provider == 'Shopify':
+        if st.button("Schedule a call with us"):
+        st.markdown("[Schedule a call](https://calendly.com/saif_corgiai/saif-corgi-labs)", unsafe_allow_html=True)
     if api_key:
         stripe.api_key = api_key
         try:
@@ -86,7 +94,7 @@ def main():
             st.error(f"Failed to generate dashboard: {str(e)}")
     else:
         st.warning("Please enter a valid API key to generate the dashboard.")
-        
+         
     
 def generate_dashboard_metrics():
     # Define the time period for the data (past 12 months)
