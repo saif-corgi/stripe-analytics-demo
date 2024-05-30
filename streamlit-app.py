@@ -37,6 +37,9 @@ with col2:
 # Streamlit app to input Stripe API key and generate dashboard
 def main():
     st.markdown("<h1 style='text-align: center; color: black; margin-bottom: 20px;'>Payments & Fraud Overview</h1>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color: black; margin-bottom: 20px;'>Select a payment provider</h2>", unsafe_allow_html=True)
+    
+    api_provider = None
     col1, col2, col3 = st.columns(3)
     with col1:
         if st.button("![Stripe](https://images.app.goo.gl/xx7a1YmZ4G5cfVv76)"):
@@ -47,6 +50,7 @@ def main():
     with col3:
         if st.button("![Shopify](https://images.app.goo.gl/hLruxnyEJawFibYx9)"):
             api_provider = 'Shopify'
+    
     if api_provider == 'Stripe':
         api_key = st.text_input(r"$\textsf{\Large Enter your credentials (API key or access token):}$", type="password", help="Please enter your API key to access the dashboard.", key="api_key_input")
     elif api_provider == 'Adyen':
