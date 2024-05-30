@@ -98,10 +98,10 @@ def main():
                         st.bar_chart(chart_data, height=300, use_container_width=True)
                     elif metric == 'Revenue/GMV Ratio':
                         chart_data = (monthly_data['Revenue'] / monthly_data['GMV'] * 100).tail(12)
-                        chart_data.index = chart_data.index.strftime('%B %Y')
+                        chart_data.index = pd.to_datetime(chart_data.index).strftime('%B %Y')
                         st.line_chart(chart_data, height=300, use_container_width=True, disable_xscroll=True, line_width=3)
                     else:
-                        chart_data.index = chart_data.index.strftime('%B %Y')
+                        chart_data.index = pd.to_datetime(chart_data.index).strftime('%B %Y')
                         st.line_chart(chart_data, height=300, use_container_width=True, disable_xscroll=True, line_width=3)
 
         except Exception as e:
