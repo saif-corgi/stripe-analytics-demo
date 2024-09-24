@@ -112,7 +112,7 @@ def main():
     if api_key:
         stripe.api_key = api_key
         try:
-            monthly_data, weekly_data = generate_dashboard_metrics()
+            monthly_data, weekly_data = generate_dashboard_metrics(account_id)
             latest_month_data = monthly_data.iloc[-1]
 
             # Display the metrics for the latest month
@@ -159,7 +159,7 @@ def main():
         st.warning("Please enter a valid API key to generate the dashboard.")
          
     
-def generate_dashboard_metrics():
+def generate_dashboard_metrics(account_id):
     # Define the time period for the data (past 12 months)
     today = datetime.date.today()
     start_date = today - datetime.timedelta(days=365)
