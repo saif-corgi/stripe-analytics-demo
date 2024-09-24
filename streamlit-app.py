@@ -60,6 +60,7 @@ def main():
     
     api_provider = 'Stripe'
     api_key = st.text_input("Enter your Stripe API key:", type="password")
+    account_id = st.text_input("Enter your Stripe account ID:", type="password")
 
     # col1, col2, col3 = st.columns(3)
     
@@ -175,10 +176,12 @@ def generate_dashboard_metrics():
         month_end_unix = int(time.mktime(month_end.timetuple()))
 
         payment_intents = stripe.PaymentIntent.list(
-            created={'gte': week_start_unix, 'lte': week_end_unix}
+            created={'gte': week_start_unix, 'lte': week_end_unix},
+            stripe_account=account_id
         )
         disputes = stripe.Dispute.list(
-            created={'gte': week_start_unix, 'lte': week_end_unix}
+            created={'gte': week_start_unix, 'lte': week_end_unix},
+            stripe_account=account_id
         )
 
         # Calculate metrics for the week
